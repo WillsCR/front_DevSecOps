@@ -1,8 +1,7 @@
-
 FROM node:20-alpine
 WORKDIR /app
 COPY package*.json ./
-RUN nom install
+RUN npm install
 EXPOSE 3000
 COPY . .
 RUN npm run build
