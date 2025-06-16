@@ -1,0 +1,68 @@
+name: 🔎 Advanced Trivy Security Scan
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+env:
+  IMAGE_NAME: "advanced-app-scan:${{ github.sha }}"
+
+jobs:
+  trivy-advanced-scan:
+    name:  Trivy Advanced Container & Config Scan
+    runs-on: ubuntu-latest
+    steps:
+      - name:  Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Clean up old Docker images
+        run: |
+          docker image prune -af || true
+
+      - name: Build Docker Image
+        run: |
+          docker build -t $IMAGE_NAME .
+
+      - name: Trivy Vulnerability Scan (JSON)
+        uses: aquasecurity/trivy-action@v0.19.0
+        with:
+          image-ref: ${{ env.IMAGE_NAME }}
+          format: 'json'
+          output: 'trivy-vuln.json'
+          exit-code: '0'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH,MEDIUM'
+
+      - name:  Trivy Config Scan (SARIF)
+        uses: aquasecurity/trivy-action@v0.19.0
+        with:
+          scan-type: 'config'
+          scan-ref: '.'
+          format: 'sarif'
+          output: 'trivy-config.sarif'
+
+      - name:  Show Vulnerability Summary
+        run: |
+          if [ -f trivy-vuln.json ]; then
+            echo "## Trivy Vulnerability Summary" >> $GITHUB_STEP_SUMMARY
+            jq '.Results[] | select(.Vulnerabilities) | {Target, Vulns: [.Vulnerabilities[] | select(.Severity=="CRITICAL" or .Severity=="HIGH" or .Severity=="MEDIUM") | {ID, Severity, Title}]}' trivy-vuln.json >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name:  Upload Trivy Reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: trivy-reports
+          path: |
+            trivy-vuln.json
+            trivy-config.sarif
+          retention-days: 30
+
+      - name: Upload Trivy Config Results to Security Tab
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: 'trivy-config.sarif'
