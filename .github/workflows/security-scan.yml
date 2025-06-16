@@ -120,17 +120,37 @@ jobs:
           retention-days: 90
 
   # ===============================================
+  # Análisis de Secretos
+  # ===============================================
+  secret-scan:
+    name: Secret Detection
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run TruffleHog OSS
+        uses: trufflesecurity/trufflehog@main
+        with:
+          path: ./
+          base: main
+          head: HEAD
+          extra_args: --debug --only-verified
+
+  # ===============================================
   # SAST (Static Application Security Testing)
   # ===============================================
   sast-scan:
-    name: 🔬 SAST Analysis
+    name:  SAST Analysis
     runs-on: ubuntu-latest
     
     steps:
-      - name: 📥 Checkout Code
+      - name:  Checkout Code
         uses: actions/checkout@v4
 
-      - name: 🔍 Run Semgrep
+      - name:  Run Semgrep
         uses: returntocorp/semgrep-action@v1
         with:
           config: >-
@@ -153,7 +173,7 @@ jobs:
     steps:
       - name: Generate Security Summary
         run: |
-          echo "## 🛡️ Security Scan Summary" >> $GITHUB_STEP_SUMMARY
+          echo "##  Security Scan Summary" >> $GITHUB_STEP_SUMMARY
           echo "| Scan Type | Status | Details |" >> $GITHUB_STEP_SUMMARY
           echo "|-----------|--------|---------|" >> $GITHUB_STEP_SUMMARY
           echo "| Dependency Scan | ${{ needs.dependency-scan.result == 'success' && '✅ Passed' || '❌ Failed' }} | NPM packages security check |" >> $GITHUB_STEP_SUMMARY

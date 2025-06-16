@@ -27,7 +27,7 @@ jobs:
           docker build -t $IMAGE_NAME .
 
       - name: Trivy Vulnerability Scan (JSON)
-        uses: aquasecurity/trivy-action@v0.19.0
+        uses: aquasecurity/trivy-action@v0
         with:
           image-ref: ${{ env.IMAGE_NAME }}
           format: 'json'
@@ -38,7 +38,7 @@ jobs:
           severity: 'CRITICAL,HIGH,MEDIUM'
 
       - name:  Trivy Config Scan (SARIF)
-        uses: aquasecurity/trivy-action@v0.19.0
+        uses: aquasecurity/trivy-action@v0
         with:
           scan-type: 'config'
           scan-ref: '.'
