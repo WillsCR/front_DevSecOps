@@ -42,7 +42,7 @@ jobs:
       - name:  Escaneo de vulnerabilidades con Trivy (JSON)
         uses: aquasecurity/trivy-action@0.20.0
         with:
-          image-ref: ${{ env.IMAGE_NAME }}
+          image-ref: docker://${{ env.IMAGE_NAME }}
           format: 'json'
           output: 'trivy-vuln.json'
           exit-code: '0'
