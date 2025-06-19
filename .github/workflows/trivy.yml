@@ -77,18 +77,21 @@ jobs:
             trivy-config.sarif
           retention-days: 30
 
-      # Verifica si el archivo SARIF existe antes de subirlo
+      # Verifica si el archivo SARIF existe y guarda el resultado en un output
       - name: Verificar existencia de trivy-config.sarif
+        id: check_sarif
         run: |
           if [ -f trivy-config.sarif ]; then
+            echo "exists=true" >> $GITHUB_OUTPUT
             echo "El archivo trivy-config.sarif existe y será subido."
           else
+            echo "exists=false" >> $GITHUB_OUTPUT
             echo "Advertencia: El archivo trivy-config.sarif NO fue generado por Trivy." >> $GITHUB_STEP_SUMMARY
           fi
 
       # Sube el reporte SARIF a la pestaña de seguridad de GitHub solo si existe
       - name: Subir resultados SARIF a Security Tab
-        if: ${{ exists('trivy-config.sarif') }}
+        if: steps.check_sarif.outputs.exists == 'true'
         uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: 'trivy-config.sarif'
