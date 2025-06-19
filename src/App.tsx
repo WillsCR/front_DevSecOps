@@ -1,17 +1,17 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Login from './components/Login'
 import Home from './components/Home'
+import Notas from './components/Notas'
 
 function App() {
 
   return (
     <BrowserRouter>
-      <div className='min-h-screen bg-blue-300 flex items-center justify-center'>
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path='/home' element={<Home />} />
+          <Route path='/notas' element={<Notas />} />
         </Routes>
-      </div>
     </BrowserRouter>
   )
 }
