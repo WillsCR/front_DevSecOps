@@ -1,32 +1,45 @@
-name: 🔎 Advanced Trivy Security Scan
+# ===============================================
+# GitHub Actions - Escaneo de Seguridad con Trivy
+# ===============================================
+
+name: "🔎 Escaneo Avanzado de Seguridad con Trivy"
 
 on:
+  # Permite ejecutar el workflow manualmente desde GitHub
   workflow_dispatch:
+  # Ejecuta el workflow en cada push a la rama main
   push:
     branches: ["main"]
   pull_request:
     branches: ["main"]
+  # Ejecuta el workflow automáticamente cada lunes a las 3 AM
+  schedule:
+    - cron: '0 3 * * 1'  
 
 env:
   IMAGE_NAME: "advanced-app-scan:${{ github.sha }}"
 
 jobs:
   trivy-advanced-scan:
-    name:  Trivy Advanced Container & Config Scan
+    name:  Escaneo avanzado de contenedor y configuración con Trivy
     runs-on: ubuntu-latest
     steps:
-      - name:  Checkout Code
+      # Descarga el código fuente del repositorio
+      - name:  Checkout del código
         uses: actions/checkout@v4
 
-      - name: Clean up old Docker images
+      # Limpia imágenes Docker antiguas para ahorrar espacio
+      - name:  Limpia imágenes Docker antiguas
         run: |
           docker image prune -af || true
 
-      - name: Build Docker Image
+      # Construye la imagen Docker de la aplicación
+      - name:  Construye la imagen Docker
         run: |
           docker build -t $IMAGE_NAME .
 
-      - name: Trivy Vulnerability Scan (JSON)
+      # Escanea la imagen Docker en busca de vulnerabilidades (reporte JSON)
+      - name:  Escaneo de vulnerabilidades con Trivy (JSON)
         uses: aquasecurity/trivy-action@0.20.0
         with:
           image-ref: ${{ env.IMAGE_NAME }}
@@ -37,7 +50,8 @@ jobs:
           vuln-type: 'os,library'
           severity: 'CRITICAL,HIGH,MEDIUM'
 
-      - name:  Trivy Config Scan (SARIF)
+      # Escanea la configuración y dependencias (reporte SARIF para Security Tab)
+      - name:  Escaneo de configuración con Trivy (SARIF)
         uses: aquasecurity/trivy-action@0.20.0
         with:
           scan-type: 'config'
@@ -45,14 +59,16 @@ jobs:
           format: 'sarif'
           output: 'trivy-config.sarif'
 
-      - name:  Show Vulnerability Summary
+      # Muestra un resumen visual de vulnerabilidades en el workflow
+      - name:  Mostrar resumen de vulnerabilidades
         run: |
           if [ -f trivy-vuln.json ]; then
-            echo "## Trivy Vulnerability Summary" >> $GITHUB_STEP_SUMMARY
+            echo "## Resumen de vulnerabilidades encontradas por Trivy" >> $GITHUB_STEP_SUMMARY
             jq '.Results[] | select(.Vulnerabilities) | {Target, Vulns: [.Vulnerabilities[] | select(.Severity=="CRITICAL" or .Severity=="HIGH" or .Severity=="MEDIUM") | {ID, Severity, Title}]}' trivy-vuln.json >> $GITHUB_STEP_SUMMARY
           fi
 
-      - name:  Upload Trivy Reports
+      # Sube los reportes generados como artefactos descargables
+      - name: Subir reportes de Trivy
         uses: actions/upload-artifact@v4
         with:
           name: trivy-reports
@@ -61,7 +77,8 @@ jobs:
             trivy-config.sarif
           retention-days: 30
 
-      - name: Upload Trivy Config Results to Security Tab
+      # Sube el reporte SARIF a la pestaña de seguridad de GitHub
+      - name:  Subir resultados SARIF a Security Tab
         uses: github/codeql-action/upload-sarif@v3
         if: always()
         with:
