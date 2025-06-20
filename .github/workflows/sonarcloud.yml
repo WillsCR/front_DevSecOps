@@ -2,7 +2,7 @@ name: SonarCloud
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "main" ]
   pull_request:
     types: [opened, synchronize, reopened]
 
@@ -20,5 +20,6 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           args: >
-            -Dsonar.projectKey=front_DevSecOps
-            -Dsonar.organization=taller-ciber
+            -Dsonar.projectKey=WillsCR
+            -Dsonar.organization=willscr
+
