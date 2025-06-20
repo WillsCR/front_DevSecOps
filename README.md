@@ -8,3 +8,8 @@
 ![Trivy](https://github.com/WillsCR/front_DevSecOps/actions/workflows/trivy.yml/badge.svg)
 
 > Este badge muestra el estado del escaneo de seguridad de contenedores e infraestructura realizado por Trivy.
+
+<!-- Badge de estado del workflow SonarCloud -->
+[![SonarQube Cloud](https://sonarcloud.io/images/project_badges/sonarcloud-dark.svg)](https://sonarcloud.io/summary/new_code?id=front_DevSecOps)
+
+> Este badge muestra el estado del análisis de SonarCloud.
