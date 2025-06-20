@@ -3,7 +3,7 @@ services:
   app:
     build: .
     ports:
-      - "${PORT:-5173}:5173"
+      - "${PORT:-8080}:8080"
     env_file:
       - .env
     environment:
