@@ -17,6 +17,9 @@ jobs:
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@v2
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           args: >
-            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+            -Dsonar.projectKey=front_DevSecOps
+            -Dsonar.organization=taller-ciber
