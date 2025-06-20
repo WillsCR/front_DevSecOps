@@ -20,6 +20,6 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           args: >
-            -Dsonar.projectKey=WillsCR
-            -Dsonar.organization=willscr
+            -Dsonar.projectKey=willscr
+            -Dsonar.organization=WillsCR
 
