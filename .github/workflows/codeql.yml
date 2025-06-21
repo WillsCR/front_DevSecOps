@@ -54,13 +54,12 @@ jobs:
       uses: github/codeql-action/analyze@v3
       with:
         category: "/language:${{matrix.language}}"
+        upload: false  # No sube el reporte SARIF
 
-    # (Opcional) Muestra un resumen visual en el workflow
-    - name:  Mostrar resultados de CodeQL
+    # Muestra un resumen visual en el workflow
+    - name: Mostrar resumen de CodeQL
       run: |
-        echo "## Resultados del análisis CodeQL" >> $GITHUB_STEP_SUMMARY
-        if [ -f results.sarif ]; then
-          echo "### Reporte SARIF disponible en la pestaña Security" >> $GITHUB_STEP_SUMMARY
-        else
-          echo "No se encontró el reporte SARIF." >> $GITHUB_STEP_SUMMARY
-        fi
+        echo "## Resumen del análisis CodeQL" >> $GITHUB_STEP_SUMMARY
+        echo "- El análisis de seguridad se ejecutó correctamente." >> $GITHUB_STEP_SUMMARY
+        echo "- Revisa los logs de este job para ver detalles de los hallazgos o advertencias." >> $GITHUB_STEP_SUMMARY
+        echo "- No se subió reporte SARIF a GitHub (upload: false)." >> $GITHUB_STEP_SUMMARY
