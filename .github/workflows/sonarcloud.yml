@@ -14,6 +14,12 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests and generate coverage
+        run: npm run test -- --coverage
+
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@v2
         env:
@@ -22,5 +28,4 @@ jobs:
           args: >
             -Dsonar.projectKey=WillsCR_front_DevSecOps
             -Dsonar.organization=willscr
-
-#zzz
+            -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
