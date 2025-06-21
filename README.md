@@ -35,7 +35,7 @@ Aplicación web simple de notas personales con pipeline DevSecOps integrado.
 
 # Copiar y editar el archivo de entorno para desarrollo
  cp .env-example .env
-# Edita las variables según tu entorno:
+# Edita las variables de entorno:
 #PORT=8080
 #NODE_ENV=production
 #VITE_BACKEND_IP=http://localhost:3000
@@ -49,11 +49,8 @@ Aplicación web simple de notas personales con pipeline DevSecOps integrado.
 # Construir la imagen
  docker build -t miapp-segura-frontend .
 
-# Crear y editar el archivo .env si es necesario
- cp .env-example .env
-
 # Ejecutar el contenedor
- docker run --env-file .env -p 8080:8080 --name miapp-segura-frontend miapp-segura-frontend
+ docker run  -p 8080:8080 --name miapp-segura-frontend miapp-segura-frontend
 ```
 
 ## Backend (dockerizado)
