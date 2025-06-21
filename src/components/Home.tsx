@@ -16,7 +16,7 @@ export default function Home() {
     try {
       await deleteNote(id);
       await fetchNotes();
-    } catch (err) {
+    } catch (_err) {
       console.error("Error al eliminar nota");
     }
   };
@@ -37,7 +37,7 @@ export default function Home() {
       setEditName('');
       setEditInfo('');
       fetchNotes();
-    } catch (err) {
+    } catch (_err) {
       console.error('Error al actualizar la nota');
     }
   };
@@ -47,7 +47,7 @@ export default function Home() {
     try {
       const data = await getNotesByUserId();
       setNotes(data);
-    } catch (error) {
+    } catch (_err) {
       console.error("Error al obtener notas");
     } finally {
       setLoading(false);

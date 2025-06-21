@@ -37,7 +37,7 @@ export function Header({ onNoteCreated }: HeaderProps) {
 
       if (onNoteCreated) onNoteCreated();
 
-    } catch (err) {
+    } catch (_err) {
         throw new Error('Error al crear las notas');
     }
   };

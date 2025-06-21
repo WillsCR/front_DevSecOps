@@ -21,7 +21,7 @@ export default function Login() {
             checkAuth();
             navigate('/home');
         },
-        onError: (error: any) => {
+        onError: (_err) => {
             setErrorMessage('Usuario y/o Contraseña incorrecta');
         },
     });
