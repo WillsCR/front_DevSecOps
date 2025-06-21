@@ -45,8 +45,9 @@ export default function Login() {
                             </div>
                         )}
                         <div className="mb-4">
-                            <label className="block text-sm mb-1 text-gray-300">Usuario:</label>
+                            <label htmlFor="username" className="block text-sm mb-1 text-gray-300">Usuario:</label>
                             <input 
+                            id="username"
                             type="text" 
                             placeholder="username"
                             value={userName}
@@ -56,8 +57,9 @@ export default function Login() {
                             />
                         </div>
                         <div className="mb-4 relative">
-                            <label className="block text-sm mb-1 text-gray-300">Contraseña:</label>
+                            <label htmlFor="password" className="block text-sm mb-1 text-gray-300">Contraseña:</label>
                             <input
+                            id="password"
                             type="password"
                             placeholder="password"
                             value={password}
