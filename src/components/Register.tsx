@@ -12,10 +12,10 @@ export default function Register() {
 
     const mutation = useMutation({
             mutationFn: () => register(username, password),
-            onSuccess: (data) => {
+            onSuccess: (_data) => {
                 navigate('/');
             },
-            onError: (error: any) => {
+            onError: (_err) => {
                 alert('Register failed');
             },
         });
