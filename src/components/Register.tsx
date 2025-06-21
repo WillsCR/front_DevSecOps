@@ -33,8 +33,9 @@ export default function Register() {
 
                     <form onSubmit={RegisterForm}>
                         <div className="mb-4">
-                            <label className="block text-sm mb-1 text-gray-300">Usuario:</label>
+                            <label htmlFor="register-username" className="block text-sm mb-1 text-gray-300">Usuario:</label>
                             <input
+                            id="register-username"
                             type="text"
                             placeholder="username"
                             value={username}
@@ -45,8 +46,9 @@ export default function Register() {
                         </div>
 
                         <div className="mb-4 relative">
-                            <label className="block text-sm mb-1 text-gray-300">Contraseña:</label>
+                            <label htmlFor="register-password" className="block text-sm mb-1 text-gray-300">Contraseña:</label>
                             <input
+                            id="register-password"
                             type="password"
                             placeholder="password"
                             value={password}
