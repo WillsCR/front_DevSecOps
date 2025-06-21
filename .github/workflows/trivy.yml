@@ -38,7 +38,7 @@ jobs:
         run: |
           docker build -t $IMAGE_NAME .
 
-      # Escanea la imagen Docker en busca de vulnerabilidades (reporte JSON)
+      # Escaneo de vulnerabilidades en imagen Docker
       - name: Escaneo de vulnerabilidades con Trivy (JSON)
         run: |
           docker run --rm \
@@ -49,18 +49,20 @@ jobs:
             --format json \
             --output /root/repo/trivy-vuln.json \
             --ignore-unfixed \
-            --vuln-type os,library \
+            --scanners vuln \
             --severity CRITICAL,HIGH,MEDIUM \
             $IMAGE_NAME
 
-      # Escanea la configuración y dependencias (reporte SARIF para Security Tab)
-      - name:  Escaneo de configuración con Trivy (SARIF)
-        uses: aquasecurity/trivy-action@0.20.0
-        with:
-          scan-type: 'config'
-          scan-ref: '.'
-          format: 'sarif'
-          output: 'trivy-config.sarif'
+      # Escaneo de configuración de IaC, dependencias, etc. (SARIF)
+      - name: Escaneo de configuración con Trivy (SARIF)
+        run: |
+          docker run --rm \
+            -v ${{ github.workspace }}:/project \
+            aquasec/trivy:latest \
+            config \
+            --format sarif \
+            --output /project/trivy-config.sarif \
+            /project
 
       # Muestra un resumen visual de vulnerabilidades en el workflow
       - name:  Mostrar resumen de vulnerabilidades
