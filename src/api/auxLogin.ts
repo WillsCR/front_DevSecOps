@@ -1,20 +1,21 @@
-import axios from "axios";
 const BACKEND_IP = import.meta.env.VITE_BACKEND_IP;
 
-export const auxLogin = async (userName : string, password: string)=>{
+export type LoginResponse = {
+    token: string;
+};
+
+export async function login(userName: string, password: string): Promise<LoginResponse> {
     const backurl: string = BACKEND_IP+"/user/validateLogin";
-    const jsonData = {
-        "userName": userName,
-        "password": password,
+    const res = await fetch(backurl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userName, password }),
+    });
+    if (!res.ok) {
+        throw new Error('Login failed');
     }
-    try {
-        const response = await axios.post(backurl, jsonData);
-        if(response.status === 201 && response.data === true){
-            return true;
-        }
-        return false;
-        
-    } catch (error) {
-        return false;
-    }
+    
+    return await res.json();
 }
