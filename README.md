@@ -10,7 +10,7 @@
 > Este badge muestra el estado del escaneo de seguridad de contenedores e infraestructura realizado por Trivy.
 
 <!-- Badge de estado del workflow SonarCloud -->
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=WillsCR_front_DevSecOps&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=WillsCR_front_DevSecOps)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=WillsCR_front_DevSecOps&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=WillsCR_front_DevSecOps)
 > Este badge muestra el estado del análisis de vulnerabilidades de SonarCloud.
 
 
